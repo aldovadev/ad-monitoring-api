@@ -18,4 +18,4 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 COPY .env ./
-CMD npx prisma migrate deploy && node dist/app.js
+CMD npx prisma migrate deploy && mode prisma/seed.js && node dist/server.js

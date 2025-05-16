@@ -15,26 +15,64 @@ datasource db {
 
 model Client {
   id           Int             @id @default(autoincrement())
-  name         String
+  name         String          @unique
   contracts    Contract[]
   performances AdPerformance[]
+
+  @@index([name])
+}
+
+model KpiType {
+  id           Int             @id @default(autoincrement())
+  name         String          @unique
+  contracts    Contract[]
+  performances AdPerformance[]
+
+  @@index([name])
 }
 
 model Contract {
-  id        Int      @id @default(autoincrement())
-  client    Client   @relation(fields: [clientId], references: [id])
-  clientId  Int
-  kpiType   String
-  kpiTarget Float
-  startDate DateTime
-  endDate   DateTime
+  id          Int             @id @default(autoincrement())
+  client      Client          @relation(fields: [client_id], references: [id])
+  client_id   Int
+  kpi_type    KpiType         @relation(fields: [kpi_type_id], references: [id])
+  kpi_type_id Int
+  kpi_target  Float
+  start_date  DateTime
+  end_date    DateTime
+  performaces AdPerformance[]
+
+  @@unique([client_id, kpi_type_id])
+  @@index([client_id, kpi_type_id])
 }
 
 model AdPerformance {
+  id           Int      @id @default(autoincrement())
+  client       Client   @relation(fields: [client_id], references: [id])
+  client_id    Int
+  contract     Contract @relation(fields: [contract_id], references: [id])
+  contract_id  Int
+  kpiType      KpiType  @relation(fields: [kpi_type_id], references: [id])
+  kpi_type_id  Int
+  actual_value Float
+  date         DateTime
+
+  @@index([date])
+  @@index([kpi_type_id])
+  @@index([client_id, kpi_type_id, date])
+}
+
+model SubmissionLog {
+  id           Int      @id @default(autoincrement())
+  submitted_by String
+  submitted_at DateTime @default(now())
+  row_count    Int
+}
+
+model JobLog {
   id          Int      @id @default(autoincrement())
-  client      Client   @relation(fields: [clientId], references: [id])
-  clientId    Int
-  date        DateTime
-  kpiType     String
-  actualValue Float
+  status      String
+  imported_at DateTime @default(now())
+  row_count   Int
+  duration_ms Int
 }

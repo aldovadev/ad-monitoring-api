@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import prisma from './config/prisma.client';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import adPerformanceRoutes from './routes/adPerformance.route';
+import logRoutes from './routes/log.route';
 
 dotenv.config();
 
@@ -27,14 +29,14 @@ app.use(cors({
 }));
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000,
+  windowMs: 30 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: 'Too many requests, please try again later.'
 });
 
-app.use('/api/', apiLimiter);
+app.use('/', apiLimiter);
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -48,10 +50,13 @@ app.get('/', (req: Request, res: Response) => {
     success: true,
     message: 'Welcome to Ad Performance Monitoring System API',
     version: '1.0.0',
-    documentation: '/api/v1/docs',
-    healthcheck: '/api/health'
+    documentation: '/docs',
+    healthcheck: '/health'
   });
 });
+
+app.use('/', adPerformanceRoutes);
+app.use('/', logRoutes);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

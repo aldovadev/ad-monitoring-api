@@ -1,0 +1,9 @@
+client_name;kpi_type;kpi_target;actual_value;date
+PT Sinar Awan;CTR;0.03;0.025;2025-05-15
+PT Sinar Awan;Impressions;10000.0;9500.0;2025-05-15
+PT Sinar Bakso;CTR;0.03;0.025;2025-05-15
+PT Sinar Bakso;Impressions;10000.0;9500.0;2025-05-15
+PT Sinar Cinta;CTR;0.03;0.025;2025-05-15
+PT Sinar Cinta;Impressions;10000.0;9500.0;2025-05-15
+PT Sinar Dermaga;CTR;0.03.0;0.033;2025-05-15
+PT Sinar Dermaga;Impressions;10000.0;11000.0;2025-05-15
