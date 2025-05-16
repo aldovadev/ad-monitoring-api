@@ -1,153 +1,121 @@
-# 🚀 Hillir Test API
+# 🚀 Hillir Ad Performance Monitoring System API
 
-Project ini merupakan API backend menggunakan **Express.js (TypeScript)**, **Prisma ORM**, dan **PostgreSQL**.
+Project ini merupakan API backend menggunakan **TypeScript**, **Express.js**, **Prisma ORM**, dan **PostgreSQL**.
 
 ---
 
-## 📦 Fitur
+## ✔️ Fitur
 
 - Express.js dengan TypeScript.
 - Prisma sebagai ORM.
 - PostgreSQL (bisa via Docker).
-- Cron Job Simulation.
+- Cron Job Simulation Pakai Script.
 - Batch Import Ad Performance via CSV.
 - Clean layered architecture (controller, service, repository).
 
 ---
 
-## 🔧 Prasyarat
+## 📝 Prasyarat
 
-- Node.js v18+
-- Docker & Docker Compose (optional, jika ingin pakai container)
-- PostgreSQL (bisa local atau dockerized)
+- Node.js v18+ [Install Node.js](https://nodejs.org/en/download)
+- PostgreSQL v13+ [Install PostgreSQL](https://www.postgresql.org/download/windows)
+- Docker & Docker Compose, Install Docker [Windows](https://docs.docker.com/desktop/setup/install/windows-install) atau [Linux](https://docs.docker.com/desktop/setup/install/linux)
 
 ---
 
-## ⚙️ Cara Menjalankan Project dengan NPM
+## ▶️ Cara Menjalankan Project dengan [NPM](https://www.npmjs.com/)
 
-### 1. Masuk Lokasi File API
+### 1. Save dan Masuk Lokasi File Sourcecode
+
+Download file .zip lalu ekstract semua file
 
 ```bash
 cd hillir-test-api
 ```
 
-### 2. Install Dependency
+### 2. Copy File .Env
+
+Sesuaikan crendentialnya mencakup username, password, nama database
+
+```bash
+cp .env.example .env
+```
+
+### 3. Install Dependency
 
 ```bash
 npm install
 ```
 
-### 3. Buat File .env
+### 4. Jalankan Script Seeder
+
+Perintah ini dilakukan untuk mengisi database dengan data dummy client, KPI type, dan contract
 
 ```bash
-cp .env.example .env
+node prisma/seed.js
 ```
 
-### 3. Sesuaikan Credentials
+### 5. API Documentation
 
-### 5. Jalankan Script Seeder Client, KpiType, dan Contract
+Bisa langsung dicoba dengan menggunakan swagger UI setelah API sukses dijalankan [API Documentation](http://localhost:8000/docs)
 
-```bash
-npx ts-node prisma/seed.ts
-```
+### 6. Simulasi Import Data Eksternal
 
-### 5. Untuk Menguji API bisa menggunakan postman
-
-```bash
-1. POST /ad-performances
-
-Payload :
-{
-    "submitted_by" : "aldova",
-    "data" : [
-    {
-        "client_id": 1,
-        "contract_id": 1,
-        "kpi_type_id": 1,
-        "actual_value": 0.029999,
-        "date": "2025-05-18"
-    },
-    {
-        "client_id": 1,
-        "contract_id": 2,
-        "kpi_type_id": 2,
-        "actual_value": 9999,
-        "date": "2025-05-18"
-    },
-    {
-        "client_id": 2,
-        "contract_id": 3,
-        "kpi_type_id": 1,
-        "actual_value": 0.03,
-        "date": "2025-05-18"
-    },
-    {
-        "client_id": 2,
-        "contract_id": 4,
-        "kpi_type_id": 2,
-        "actual_value": 10000,
-        "date": "2025-05-18"
-    },
-        {
-        "client_id": 3,
-        "contract_id": 5,
-        "kpi_type_id": 1,
-        "actual_value": 0.05,
-        "date": "2025-05-18"
-    },
-    {
-        "client_id": 3,
-        "contract_id": 6,
-        "kpi_type_id": 2,
-        "actual_value": 11000,
-        "date": "2025-05-18"
-    }
-    ]
-}
-
-2. GET /underperforming-ads?client_id={number}&kpi_type_id{number}&date={date}
-3. /job-logs?status={status}
-3. /job-logs?submitted_by={name}
-```
-
-### 5. Untuk Menguji Simulasi API External
+Data Eksternal disimulasikan berasal dari sebuah file CSV dengan bentuk data yang berbeda dari parameter penambahan data, disana terdapat validasi dan filtrasi sebelum di masukan ke database.
 
 ```bash
 npx ts-node src/scripts/externalCSVImpor.ts
 ```
 
-## ⚙️ Cara Menjalankan Project dengan Docker
+## ▶️ Cara Menjalankan Project dengan [Docker](https://www.docker.com/)
 
-### 1. Masuk Lokasi File API
+### 1. Save dan Masuk Lokasi File Sourcecode
+
+Download file .zip lalu ekstract semua file
 
 ```bash
 cd hillir-test-api
 ```
 
-### 2. Buat File .env
+### 2. Copy File .Env
+
+Sesuaikan crendentialnya mencakup username, password, nama database
 
 ```bash
 cp .env.example .env
 ```
 
-### 3. Sesuaikan Credentials
-
-### 5. Jalan kan Container di Latar Belakang
+### 3. Jalan kan Container di Latar Belakang
 
 ```bash
 docker compose up -d
 ```
 
-### 5. Jalankan Seeder lewat Docker Exec
+### 5. API Documentation
 
-```bash
-docker exec -it hillir-test-api sh
-node prisma/seed.ts
-```
+Bisa langsung dicoba dengan menggunakan swagger UI setelah API sukses dijalankan [API Documentation](http://localhost:8000/docs)
 
 ### 5. Untuk Menguji Simulasi API External
 
+Masuke ke container
+
 ```bash
 docker exec -it hillir-test-api sh
-node dist/scripts/externalCSVImpor.ts
 ```
+
+Eksekusi Script untuk membaca CSV
+
+```bash
+node dist/scripts/externalCSVImport.js
+```
+
+Keluar dari container
+
+```bash
+exit
+```
+
+## 📄 License & Copyright
+
+© 2025 Aldova Guswantri.  
+This project and its contents are protected under copyright. Unauthorized use, modification, or distribution is prohibited without permission.

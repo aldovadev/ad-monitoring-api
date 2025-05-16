@@ -22,6 +22,8 @@ WORKDIR /app
 COPY --from=build /app/package.json /app/package-lock.json ./
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/assets ./assets
+COPY --from=build /app/docs ./docs
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 8000
