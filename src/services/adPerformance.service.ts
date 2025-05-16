@@ -1,8 +1,6 @@
 import { getAdPerformancesRepo } from '../repositories/adPerformance.repository';
 import { createAdPerformancesRepo } from '../repositories/adPerformance.repository';
 import { UnderperformingAdsDTO, AdPerformanceFiltersDTO, AdPerformanceWithContractAndClientDTO, AdPerformancesPayloadDTO } from '../dtos/adPerformance.dto';
-import { createSubmissionLogRepo } from '../repositories/log.repository';
-
 
 
 export const getUnderperformingAdsService = async (filters: AdPerformanceFiltersDTO): Promise<UnderperformingAdsDTO[]> => {
@@ -23,8 +21,8 @@ export const getUnderperformingAdsService = async (filters: AdPerformanceFilters
 
 export const createAdPerformancesService = async (payload: AdPerformancesPayloadDTO) => {
 
-  const createdAdPerformances = await createAdPerformancesRepo(payload.data);
-  await createSubmissionLogRepo(payload.submitted_by, createdAdPerformances.count);
+  const createdAdPerformances = await createAdPerformancesRepo(payload);
+
 
   return createdAdPerformances;
 };

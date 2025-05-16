@@ -1,4 +1,16 @@
 services:
+  hillir-init:
+    image: aldovadev/hillir-test-api:latest
+    container_name: hillir-init
+    command: sh -c "npx prisma db push && npm run seed"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - hillir-db
+    networks:
+      - hillir_default
+    restart: "on-failure"
+
   hillir-test-api:
     image: aldovadev/hillir-test-api:latest
     container_name: hillir-test-api
@@ -11,7 +23,7 @@ services:
     networks:
       - hillir_default
     depends_on:
-      - hillir-db
+      - hillir-init
     restart: unless-stopped
 
   hillir-db:

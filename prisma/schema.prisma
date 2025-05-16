@@ -25,6 +25,7 @@ model Client {
 model KpiType {
   id           Int             @id @default(autoincrement())
   name         String          @unique
+  description  String?
   contracts    Contract[]
   performances AdPerformance[]
 
@@ -65,14 +66,14 @@ model AdPerformance {
 model SubmissionLog {
   id           Int      @id @default(autoincrement())
   submitted_by String
-  submitted_at DateTime @default(now())
+  created_at   DateTime @default(now())
   row_count    Int
 }
 
 model JobLog {
   id          Int      @id @default(autoincrement())
   status      String
-  imported_at DateTime @default(now())
   row_count   Int
   duration_ms Int
+  created_at  DateTime @default(now())
 }

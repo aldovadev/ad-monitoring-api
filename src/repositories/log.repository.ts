@@ -7,7 +7,7 @@ export const getJobLogsRepo = async (status: string) => {
       status: status === 'all' ? undefined : status,
     },
     orderBy: {
-      imported_at: 'desc',
+      created_at: 'desc',
     },
   });
   return jobLogs
@@ -21,21 +21,9 @@ export const getSubmissionLogsRepo = async (submitted_by: string) => {
       submitted_by: submitted_by,
     },
     orderBy: {
-      submitted_at: 'desc',
+      created_at: 'desc',
     },
   });
   return submissionLogs
 };
 
-
-export const createSubmissionLogRepo = async (submitted_by: string, rows: number) => {
-
-  const submissionLog = await prisma.submissionLog.create({
-    data: {
-      submitted_by: submitted_by,
-      row_count: rows,
-    }
-  });
-
-  return submissionLog
-};

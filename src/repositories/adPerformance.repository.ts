@@ -1,5 +1,5 @@
 import prisma from '../config/prisma.client';
-import { AdPerformanceCreateDTO, AdPerformanceFiltersDTO } from '../dtos/adPerformance.dto';
+import { AdPerformanceFiltersDTO, AdPerformancesPayloadDTO } from '../dtos/adPerformance.dto';
 
 
 export const getAdPerformancesRepo = async (filters: AdPerformanceFiltersDTO) => {
@@ -27,16 +27,28 @@ export const getAdPerformancesRepo = async (filters: AdPerformanceFiltersDTO) =>
 };
 
 
-export const createAdPerformancesRepo = async (adPerformancesData: AdPerformanceCreateDTO[]) => {
-  const createdAdPerformances = await prisma.adPerformance.createMany({
-    data: adPerformancesData.map(item => ({
-      client_id: item.client_id,
-      contract_id: item.contract_id,
-      kpi_type_id: item.kpi_type_id,
-      actual_value: item.actual_value,
-      date: new Date(item.date),
-    }))
+export const createAdPerformancesRepo = async (payload: AdPerformancesPayloadDTO) => {
+  const result = await prisma.$transaction(async (tx) => {
+    const createdAdPerformances = await tx.adPerformance.createMany({
+      data: payload.data.map(item => ({
+        client_id: item.client_id,
+        contract_id: item.contract_id,
+        kpi_type_id: item.kpi_type_id,
+        actual_value: item.actual_value,
+        date: new Date(item.date),
+      }))
+    });
+
+    await tx.submissionLog.create({
+      data: {
+        submitted_by: payload.submitted_by,
+        row_count: createdAdPerformances.count,
+      }
+    });
+
+    return createdAdPerformances;
   });
 
-  return createdAdPerformances;
+  return result;
 };
+

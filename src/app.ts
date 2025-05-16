@@ -8,9 +8,16 @@ import rateLimit from 'express-rate-limit';
 import adPerformanceRoutes from './routes/adPerformance.route';
 import logRoutes from './routes/log.route';
 
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import path from 'path';
+
 dotenv.config();
 
 const app: Application = express();
+
+const swaggerDocument = YAML.load(path.join(__dirname, '../docs/openapi.yaml'));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -40,7 +47,7 @@ app.use('/', apiLimiter);
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'API is healthy' });
 });
 
@@ -51,7 +58,6 @@ app.get('/', (req: Request, res: Response) => {
     message: 'Welcome to Ad Performance Monitoring System API',
     version: '1.0.0',
     documentation: '/docs',
-    healthcheck: '/health'
   });
 });
 

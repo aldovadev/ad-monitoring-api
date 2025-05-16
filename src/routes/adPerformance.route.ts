@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getUnderperformingAds, createAdPerformances } from '../controllers/adPerformance.controller';
+import { getUnderperformingAdsController, createAdPerformancesController } from '../controllers/adPerformance.controller';
 
 const router = Router();
 
-router.get('/underperforming-ads', getUnderperformingAds);
-router.post('/ad-performances', createAdPerformances);
+router.get('/underperforming-ads', getUnderperformingAdsController);
+router.post('/ad-performances', createAdPerformancesController);
 
 export default router;
