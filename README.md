@@ -52,6 +52,10 @@ npm install
 Perintah ini dilakukan untuk mengisi database dengan data dummy client, KPI type, dan contract
 
 ```bash
+npx prisma generate
+
+npx prisma db push
+
 node prisma/seed.js
 ```
 
