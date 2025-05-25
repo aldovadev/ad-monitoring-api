@@ -23,6 +23,5 @@ export const createAdPerformancesService = async (payload: AdPerformancesPayload
 
   const createdAdPerformances = await createAdPerformancesRepo(payload);
 
-
   return createdAdPerformances;
 };
